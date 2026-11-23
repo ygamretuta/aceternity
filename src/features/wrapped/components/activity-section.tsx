@@ -34,7 +34,7 @@ function buildStats(data: WrappedData): Stat[] {
 
 function StatCard({ stat }: { stat: Stat }) {
   return (
-    <li className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left">
+    <li className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left">
       <GlowingEffect spread={40} glow disabled={false} proximity={64} inactiveZone={0.01} />
       <div className="mb-4 flex size-9 items-center justify-center rounded-full bg-accent/15 text-accent">
         {stat.icon}
@@ -44,14 +44,14 @@ function StatCard({ stat }: { stat: Stat }) {
         unit={stat.unit}
         className="block text-4xl font-bold tabular-nums md:text-5xl"
       />
-      <p className="mt-1 text-sm text-stage-muted">{stat.label}</p>
+      <p className="mt-2 text-sm text-stage-muted">{stat.label}</p>
     </li>
   );
 }
 
 export function ActivitySection({ data }: { data: WrappedData }) {
   return (
-    <StorySection className="min-h-0 py-16">
+    <StorySection className="min-h-0 pt-8 pb-24">
       <Reveal className="w-full max-w-5xl">
         <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {buildStats(data).map((stat) => (

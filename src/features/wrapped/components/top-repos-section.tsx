@@ -10,7 +10,7 @@ export function TopReposSection({ data }: { data: WrappedData }) {
     <StorySection>
       <Reveal className="w-full max-w-6xl">
         <h2 className="mb-2 text-3xl font-bold md:text-5xl">Where your year went</h2>
-        <p className="mb-10 text-stage-muted">
+        <p className="mb-12 text-stage-muted">
           Hover a card. Rings show each repo&apos;s share of your commits.
         </p>
         <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

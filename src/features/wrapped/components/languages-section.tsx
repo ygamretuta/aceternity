@@ -9,13 +9,13 @@ export function LanguagesSection({ data }: { data: WrappedData }) {
 
   return (
     <StorySection>
-      <Reveal className="flex w-full max-w-2xl flex-col gap-10">
+      <Reveal className="flex w-full max-w-2xl flex-col gap-12">
         <h2 className="text-3xl font-bold md:text-5xl">
           You spoke <span className="text-accent">{data.languages[0].name}</span> most
         </h2>
         <ul className="flex flex-col gap-4 text-left">
           {data.languages.map((language) => (
-            <li key={language.name} className="flex flex-col gap-1">
+            <li key={language.name} className="flex flex-col gap-2">
               <div className="flex justify-between text-sm">
                 <span>{language.name}</span>
                 <span className="text-stage-muted">{formatPercent(language.share)}</span>

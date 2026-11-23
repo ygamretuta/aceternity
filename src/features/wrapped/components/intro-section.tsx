@@ -9,7 +9,7 @@ import { StorySection } from "./story-section";
 
 export function IntroSection({ data }: { data: WrappedData }) {
   return (
-    <StorySection id="top">
+    <StorySection id="top" className="min-h-0 pb-8">
       {/* The beams use Math.random, so they render at request time instead of prerender. */}
       <Suspense>
         <BackgroundBeams />

@@ -32,6 +32,7 @@ Next.js 16 App Router, React 19, TypeScript `strict`, Tailwind v4, Prisma + Post
 - One responsibility per component; split past ~100-150 lines or when data access mixes with markup.
 - Early returns, named constants, options objects, lookup maps instead of long if/else chains. Comments explain why.
 - Tailwind: use semantic tokens from `@theme` in `src/styles/globals.css`; no arbitrary values without a why-comment. A utility string repeated ~3 times becomes a component with variants.
+- Spacing follows an 8-pt grid: margin, padding and gap use only even Tailwind steps (2, 4, 6, 8, 10, 12, 16, 20, 24...), never 1, 3, 5, 7 or 9. Between a section heading and its content use 12 (48px); inside a card use 4 to 6.
 - Errors: report handled errors with `captureError(error, { area, action })`; never swallow them or leave only `console.error`. No PII in events.
 - Analytics: event names only from `ANALYTICS_EVENTS`; identify users by internal id only; flags only via `isFeatureEnabled`.
 - DRY only after about the third repetition. No dead code, unused dependencies or stray `console.log`.

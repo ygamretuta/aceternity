@@ -9,7 +9,7 @@ export function TimelineSection({ data }: { data: WrappedData }) {
 
   return (
     <StorySection>
-      <Reveal className="flex w-full max-w-3xl flex-col items-center gap-10">
+      <Reveal className="flex w-full max-w-3xl flex-col items-center gap-12">
         <h2 className="text-3xl font-bold md:text-5xl">
           <span className="text-accent">{monthName(data.busiestMonth.month)}</span> was your month
         </h2>

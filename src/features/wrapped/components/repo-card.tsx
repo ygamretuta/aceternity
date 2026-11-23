@@ -18,7 +18,7 @@ export function RepoCard({ repo }: { repo: TopRepo }) {
 
   return (
     <CardContainer containerClassName="py-0" className="w-full">
-      <CardBody className="group/card relative h-auto w-full rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left">
+      <CardBody className="group/card relative h-auto w-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left">
         <GlowingEffect
           disabled={false}
           glow
@@ -50,7 +50,7 @@ export function RepoCard({ repo }: { repo: TopRepo }) {
           </h3>
         </CardItem>
 
-        <CardItem translateZ={20} className="mt-1 w-full">
+        <CardItem translateZ={20} className="mt-2 w-full">
           <p className="line-clamp-2 min-h-10 text-sm text-stage-muted">
             {repo.description ?? "No description. The commits speak for themselves."}
           </p>
@@ -66,9 +66,9 @@ export function RepoCard({ repo }: { repo: TopRepo }) {
                 />
               ))}
             </div>
-            <ul className="mt-2 flex flex-wrap gap-x-3 text-xs text-stage-muted">
+            <ul className="mt-2 flex flex-wrap gap-x-4 text-xs text-stage-muted">
               {repo.languages.slice(0, MAX_LEGEND_LANGUAGES).map((language) => (
-                <li key={language.name} className="flex items-center gap-1">
+                <li key={language.name} className="flex items-center gap-2">
                   <span
                     className="size-2 rounded-full"
                     style={{ backgroundColor: language.color }}
@@ -80,15 +80,15 @@ export function RepoCard({ repo }: { repo: TopRepo }) {
           </CardItem>
         )}
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <CardItem translateZ={40} className="flex items-center gap-3">
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <CardItem translateZ={40} className="flex items-center gap-4">
             <CommitShareRing share={repo.yearShare} className={text} />
             <div>
               <p className="text-xl font-bold">{formatNumber(repo.commits)}</p>
               <p className="text-xs text-stage-muted">commits</p>
             </div>
           </CardItem>
-          <CardItem translateZ={40} className="flex items-center gap-1 text-sm text-stage-muted">
+          <CardItem translateZ={40} className="flex items-center gap-2 text-sm text-stage-muted">
             <IconStar className="size-4" />
             {formatNumber(repo.stars)}
           </CardItem>
@@ -100,7 +100,7 @@ export function RepoCard({ repo }: { repo: TopRepo }) {
           target="_blank"
           rel="noopener noreferrer"
           translateZ={70}
-          className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs opacity-0 backdrop-blur transition-opacity group-hover/card:opacity-100 focus-visible:opacity-100"
+          className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-black/60 px-4 py-2 text-xs opacity-0 backdrop-blur transition-opacity group-hover/card:opacity-100 focus-visible:opacity-100"
         >
           Open <IconArrowUpRight className="size-3" />
         </CardItem>
