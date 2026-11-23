@@ -1,65 +1,63 @@
-import { IconEye, IconGitPullRequest, IconBug, IconCalendarWeek } from "@tabler/icons-react";
+import { IconBug, IconCalendarWeek, IconEye, IconGitPullRequest } from "@tabler/icons-react";
 import type { ReactNode } from "react";
-import { BentoGrid, BentoGridItem } from "@/components/aceternity/bento-grid";
-import { formatNumber, formatPercent } from "../format";
+import { GlowingEffect } from "@/components/aceternity/glowing-effect";
 import type { WrappedData } from "../types";
+import { CountUp } from "./count-up";
 import { Reveal } from "./reveal";
 import { StorySection } from "./story-section";
 
-function BigNumber({ value }: { value: string }) {
-  return <p className="flex flex-1 items-center text-6xl font-bold text-accent">{value}</p>;
-}
+type Stat = {
+  label: string;
+  value: number;
+  unit: "count" | "percent";
+  icon: ReactNode;
+};
 
-function buildTiles(
-  data: WrappedData,
-): { title: string; description: string; value: string; icon: ReactNode; className?: string }[] {
+function buildStats(data: WrappedData): Stat[] {
   return [
     {
-      title: "Pull requests",
-      description: "Changes you proposed",
-      value: formatNumber(data.pullRequests),
+      label: "Pull requests",
+      value: data.pullRequests,
+      unit: "count",
       icon: <IconGitPullRequest className="size-5" />,
-      className: "md:col-span-2",
     },
+    { label: "Reviews", value: data.reviews, unit: "count", icon: <IconEye className="size-5" /> },
+    { label: "Issues", value: data.issues, unit: "count", icon: <IconBug className="size-5" /> },
     {
-      title: "Reviews",
-      description: "Other people's code you read",
-      value: formatNumber(data.reviews),
-      icon: <IconEye className="size-5" />,
-    },
-    {
-      title: "Issues",
-      description: "Problems opened",
-      value: formatNumber(data.issues),
-      icon: <IconBug className="size-5" />,
-    },
-    {
-      title: "Weekend commits",
-      description: "Share of your work on Saturday and Sunday",
-      value: formatPercent(data.weekendShare),
+      label: "Weekend commits",
+      value: data.weekendShare,
+      unit: "percent",
       icon: <IconCalendarWeek className="size-5" />,
-      className: "md:col-span-2",
     },
   ];
 }
 
+function StatCard({ stat }: { stat: Stat }) {
+  return (
+    <li className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left">
+      <GlowingEffect spread={40} glow disabled={false} proximity={64} inactiveZone={0.01} />
+      <div className="mb-4 flex size-9 items-center justify-center rounded-full bg-accent/15 text-accent">
+        {stat.icon}
+      </div>
+      <CountUp
+        to={stat.value}
+        unit={stat.unit}
+        className="block text-4xl font-bold tabular-nums md:text-5xl"
+      />
+      <p className="mt-1 text-sm text-stage-muted">{stat.label}</p>
+    </li>
+  );
+}
+
 export function ActivitySection({ data }: { data: WrappedData }) {
   return (
-    <StorySection>
+    <StorySection className="min-h-0 py-16">
       <Reveal className="w-full max-w-5xl">
-        <h2 className="mb-10 text-3xl font-bold md:text-5xl">More than just commits</h2>
-        <BentoGrid className="text-left">
-          {buildTiles(data).map((tile) => (
-            <BentoGridItem
-              key={tile.title}
-              title={tile.title}
-              description={tile.description}
-              header={<BigNumber value={tile.value} />}
-              icon={tile.icon}
-              className={tile.className}
-            />
+        <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {buildStats(data).map((stat) => (
+            <StatCard key={stat.label} stat={stat} />
           ))}
-        </BentoGrid>
+        </ul>
       </Reveal>
     </StorySection>
   );

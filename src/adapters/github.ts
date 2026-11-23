@@ -2,7 +2,7 @@ import { z } from "zod";
 import { requireEnv } from "@/lib/env";
 
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
-const TOP_REPOSITORY_COUNT = 6;
+const TOP_REPOSITORY_COUNT = 12;
 const LANGUAGES_PER_REPOSITORY = 5;
 
 export class GitHubUserNotFoundError extends Error {

@@ -1,7 +1,6 @@
 import { getSiteUrl } from "@/lib/site";
 import type { WrappedData } from "../types";
 import { ActivitySection } from "./activity-section";
-import { CommitsSection } from "./commits-section";
 import { IntroSection } from "./intro-section";
 import { LanguagesSection } from "./languages-section";
 import { PersonalitySection } from "./personality-section";
@@ -15,7 +14,6 @@ export function WrappedStory({ data }: { data: WrappedData }) {
   return (
     <div className="dark bg-stage text-stage-foreground">
       <IntroSection data={data} />
-      <CommitsSection data={data} />
       <ActivitySection data={data} />
       <TopReposSection data={data} />
       <LanguagesSection data={data} />
