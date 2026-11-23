@@ -51,7 +51,7 @@ function StatCard({ stat }: { stat: Stat }) {
 
 export function ActivitySection({ data }: { data: WrappedData }) {
   return (
-    <StorySection className="min-h-0 pt-8 pb-24">
+    <StorySection className="min-h-0 pt-8 pb-8">
       <Reveal className="w-full max-w-5xl">
         <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {buildStats(data).map((stat) => (

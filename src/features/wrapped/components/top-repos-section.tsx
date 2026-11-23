@@ -7,7 +7,7 @@ export function TopReposSection({ data }: { data: WrappedData }) {
   if (data.topRepos.length === 0) return null;
 
   return (
-    <StorySection>
+    <StorySection className="min-h-0 pt-8">
       <Reveal className="w-full max-w-6xl">
         <h2 className="mb-2 text-3xl font-bold md:text-5xl">Where your year went</h2>
         <p className="mb-12 text-stage-muted">
