@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* Dark mode is opt-in with a .dark ancestor, so the story stays cinematic on any OS theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic tokens: named by purpose, never by look. Change these, not components. */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-muted: #6b7280;
+  --color-primary: #2563eb;
+  --color-primary-foreground: #ffffff;
+  --color-danger: #dc2626;
+  --color-stage: #0a0a0a;
+  --color-stage-foreground: #fafafa;
+  --color-stage-muted: #a3a3a3;
+  --color-accent: #818cf8;
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+  --animate-aurora: aurora 60s linear infinite;
+
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+    }
+  }
+
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
+    }
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
+    }
+  }
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
+    --color-muted: #9ca3af;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}

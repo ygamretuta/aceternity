@@ -1,0 +1,9 @@
+// The contract for the database. Every change here ships as a migration in a PR.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

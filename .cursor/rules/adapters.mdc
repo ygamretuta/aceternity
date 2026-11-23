@@ -1,0 +1,10 @@
+---
+description: Rules for vendor adapters
+globs: src/adapters/**
+alwaysApply: false
+---
+
+- This folder is the only place vendor SDKs are imported. One module per external system.
+- Export small, typed functions in the app's own terms; never leak vendor types to callers.
+- Report caught errors with `captureError` including context. Inject dependencies where it eases testing.
+- Analytics event names live only in `analytics-events.ts`.

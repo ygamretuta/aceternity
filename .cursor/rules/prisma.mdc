@@ -1,0 +1,9 @@
+---
+description: Rules for the database schema and migrations
+globs: prisma/**
+alwaysApply: false
+---
+
+- `schema.prisma` is the contract; every change ships as a migration (`pnpm prisma migrate dev --name <name>`).
+- Domain enums are Prisma enums. Name models and fields in the client's business terms.
+- Never edit generated output in `src/generated/`; run `pnpm prisma generate`.

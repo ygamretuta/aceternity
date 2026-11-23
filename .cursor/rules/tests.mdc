@@ -1,0 +1,9 @@
+---
+description: Rules for tests
+globs: "**/*.test.{ts,tsx},tests/e2e/**"
+alwaysApply: false
+---
+
+- Test names describe behavior in business terms.
+- Vitest for domain logic, adapters (with injected fakes) and client components; Playwright for critical flows and async Server Components.
+- Colocate unit tests with the code they cover.

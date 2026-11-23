@@ -1,0 +1,6 @@
+---
+description: Pointer to the shared project rules
+alwaysApply: true
+---
+
+Follow the project rules in `AGENTS.md` at the repo root. It is the single source of truth; do not copy its content into other rule files.

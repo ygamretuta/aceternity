@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# aceternity
 
-## Getting Started
+Developer Wrapped: type a GitHub username and get a scroll-driven story of their coding year, built with Aceternity UI components. Preview without a token at `/sample`.
 
-First, run the development server:
+## How it works
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `/` landing (Spotlight, Flip Words, Vanish Input) validates the username and routes to `/u/<login>`.
+- `/u/<login>` loads the year inside `<Suspense>` while the Multi-step Loader plays, then renders eight sections: intro, commits, activity (Bento Grid), top repos (Card Hover Effect), languages, monthly timeline, personality (Aurora), and a share dock.
+- `src/adapters/github.ts` is the only code that talks to GitHub's GraphQL API and returns the app's own types. `src/features/wrapped/server/build-wrapped.ts` turns that into the story data (streaks, weekend share, language mix, personality). Results are cached per user and year for hours.
+- `/u/<login>/opengraph-image` generates the share image with `next/og`.
+- Needs `GITHUB_TOKEN` (a fine-grained token with public read access). Set it in `.env.local` and in Vercel.
+- Aceternity components live in `src/components/aceternity/` (added with the shadcn CLI: `pnpm dlx shadcn@latest add https://ui.aceternity.com/registry/<name>.json`).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Next.js 16 (App Router, React 19), TypeScript, Tailwind v4, Prisma + Postgres (Neon), S3, Sentry, PostHog. Deployed on Vercel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Install Node 24+ and pnpm 10+.
+2. `pnpm install` (also runs `prisma generate`).
+3. `cp .env.example .env.local` and fill in values. The database URLs already point at the local container.
+4. `docker compose up -d` starts local Postgres.
+5. `pnpm prisma migrate dev` applies migrations.
+6. `pnpm dev` and open http://localhost:3000.
 
-## Learn More
+Checks: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`.
 
-To learn more about Next.js, take a look at the following resources:
+## Folder map
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Path                     | Purpose                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| `src/app/`               | Routes only. Thin pages that compose features.                                 |
+| `src/features/<area>/`   | One folder per business area: `components/`, `hooks/`, `server/`, `types.ts`.  |
+| `src/components/ui/`     | Shared presentational components.                                              |
+| `src/adapters/`          | The only place vendor SDKs are imported (Sentry, PostHog, S3, client systems). |
+| `src/db/client.ts`       | The single Prisma client.                                                      |
+| `src/lib/`               | Small shared helpers and constants.                                            |
+| `src/styles/globals.css` | Tailwind import and `@theme` tokens.                                           |
+| `prisma/schema.prisma`   | The data contract. Every change is a migration in a PR.                        |
+| `tests/e2e/`             | Playwright tests. Set `PLAYWRIGHT_BASE_URL` to run against a Vercel preview.   |
+| `terraform/`             | Vercel project, env vars, domain, S3 bucket.                                   |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Adding a feature
 
-## Deploy on Vercel
+1. Model data in `prisma/schema.prisma`, then `pnpm prisma migrate dev --name <name>`.
+2. Create `src/features/<area>/` with `server/` (queries, Server Actions), `components/`, `hooks/`, `types.ts`.
+3. Validate input with Zod at every boundary and infer types with `z.infer`.
+4. Add a thin page in `src/app/` that reads params, calls the feature and renders.
+5. New external system: add `src/adapters/<system>.ts` and import the vendor SDK only there.
+6. Add Vitest tests next to the code and a Playwright test for the critical flow.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Monitoring (Sentry)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Create a Sentry project for Next.js. Set `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN` and `SENTRY_AUTH_TOKEN` (source maps) in Vercel (Terraform sets them).
+- Sentry is enabled only in production builds. Traces sample at 0.1. Events are scrubbed in `src/lib/monitoring-config.ts`.
+- Report handled errors with `captureError(error, { area, action })` from `src/adapters/monitoring.ts`.
+- Test error: on a deployed build, throw an error in a page temporarily, or call `captureError(new Error("test"))` from a client component, and check the Sentry issue list.
+
+## Analytics (PostHog)
+
+- Create a PostHog project. Set `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`.
+- Disabled in development. Pageviews are automatic; custom events come only from `ANALYTICS_EVENTS` in `src/adapters/analytics-events.ts`. Current events: `signed_up`.
+- Identify users by internal id only, never emails or names.
+- Verify: in a production build call `trackEvent(ANALYTICS_EVENTS.SIGNED_UP)` and check PostHog's Activity (live events) view.
+- Feature flags only through `isFeatureEnabled(flag)`.
